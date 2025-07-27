@@ -83,12 +83,9 @@ func TestFormatStdlibSentinelErrorWrappedWithoutMessage(t *testing.T) {
 	err = fault.Wrap(err, fctx.With(ctx))
 	err = fault.Wrap(err, ftag.With(ftag.Internal))
 
-	a.NotContains(err.Error(), "<fctx>", "filtered out by .Error()")
-	a.NotContains(err.Error(), "<ftag>", "filtered out by .Error()")
-
-	a.Equal("failed to call function: stdlib sentinel error", err.Error())
-	a.Equal("failed to call function: stdlib sentinel error", fmt.Sprintf("%s", err))
-	a.Equal("failed to call function: stdlib sentinel error", fmt.Sprintf("%v", err))
+	a.Equal("INTERNAL: failed to call function: stdlib sentinel error", err.Error())
+	a.Equal("INTERNAL: failed to call function: stdlib sentinel error", fmt.Sprintf("%s", err))
+	a.Equal("INTERNAL: failed to call function: stdlib sentinel error", fmt.Sprintf("%v", err))
 	a.Regexp(`stdlib sentinel error
 \s+.+fault/tests/test_callers.go:29
 failed to call function
