@@ -74,6 +74,21 @@ func GetAll(err error) []Kind {
 	return ks
 }
 
+// Is checks if the error has a specific kind.
+func Is(err error, k Kind) bool {
+	if err == nil {
+		return false
+	}
+
+	for _, kind := range GetAll(err) {
+		if kind == k {
+			return true
+		}
+	}
+
+	return false
+}
+
 // Common kinds of error:
 
 const (
