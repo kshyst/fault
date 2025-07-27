@@ -35,3 +35,12 @@ func TestMultipleWrappedKind(t *testing.T) {
 
 	assert.Equal(t, []ftag.Kind{ftag.NotFound, ftag.InvalidArgument, ftag.Internal}, out)
 }
+
+func TestIsKind(t *testing.T) {
+	err := ftag.Wrap(errors.New("a problem"), ftag.Internal)
+	err = ftag.Wrap(err, ftag.InvalidArgument)
+
+	assert.True(t, ftag.Is(err, ftag.InvalidArgument), "Should return true for InvalidArgument kind")
+	assert.False(t, ftag.Is(err, ftag.NotFound), "Should return false for NotFound kind")
+	assert.True(t, ftag.Is(err, ftag.Internal), "Should return True for Internal kind")
+}
