@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/Southclaws/fault"
+	"github.com/kshyst/fault"
 )
 
 // the root cause of errors for testing. All line numbers here should remain the

@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/Southclaws/fault"
-	apihttp "github.com/Southclaws/fault/examples/api/http"
-	"github.com/Southclaws/fault/fmsg"
-	"github.com/Southclaws/fault/ftag"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
+	"github.com/kshyst/fault"
+	apihttp "github.com/kshyst/fault/examples/api/http"
+	"github.com/kshyst/fault/fmsg"
+	"github.com/kshyst/fault/ftag"
 	"log/slog"
 	"net/http"
 )

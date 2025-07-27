@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/Southclaws/fault/fctx"
 	"github.com/kr/pretty"
+	"github.com/kshyst/fault/fctx"
 	"github.com/stretchr/testify/assert"
 )
 
