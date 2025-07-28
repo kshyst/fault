@@ -28,7 +28,7 @@ func Wrap(err error, w ...Wrapper) error {
 	if _, ok := err.(*container); !ok {
 		err = &container{
 			cause:    err,
-			location: "",
+			location: getLocation(),
 		}
 	}
 
