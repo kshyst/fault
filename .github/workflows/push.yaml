@@ -22,6 +22,18 @@ jobs:
         with:
           files: ./coverage.out
 
+      - name: Set up Git user
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: Set up authentication for pushing tags
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${GITHUB_REPOSITORY}.git
+
+
       - name: Release a new version
         run: |
           chmod +x .github/workflows/release.sh
