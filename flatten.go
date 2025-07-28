@@ -26,7 +26,7 @@ func Flatten(err error) Chain {
 	}
 
 	// first, flatten the call tree into an array so it's easier to work with.
-	flat := []error{}
+	var flat []error
 	for err != nil {
 		flat = append(flat, err)
 		err = errors.Unwrap(err)
