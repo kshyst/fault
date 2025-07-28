@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/kshyst/fault"
@@ -220,4 +221,27 @@ func TestFlattenStdlibErrorfWrappedExternallyWrappedErrorBrokenChain(t *testing.
 
 	e2 := chain[2]
 	a.Equal("failed to query", e2.Message)
+}
+
+func TestFlattenString(t *testing.T) {
+	a := assert.New(t)
+
+	original := externalWrappedPostgresError()
+	err := fault.Wrap(original, fmsg.With("failed to query"))
+	chain := fault.Flatten(err)
+	full := err.Error()
+
+	a.Equal("failed to query: external pg error: fatal: your sql was wrong bro (SQLSTATE 123): fatal: your sql was wrong bro (SQLSTATE 123)", full)
+	a.Len(chain, 3)
+
+	e0 := chain[0]
+	a.Equal("fatal: your sql was wrong bro (SQLSTATE 123)", e0.Message)
+
+	e1 := chain[1]
+	a.Equal("external pg error: fatal: your sql was wrong bro (SQLSTATE 123)", e1.Message)
+
+	e2 := chain[2]
+	a.Equal("failed to query", e2.Message)
+
+	fmt.Println(fault.FlattenString(err))
 }

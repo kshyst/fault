@@ -2,6 +2,7 @@ package fault
 
 import (
 	"errors"
+	"github.com/kshyst/fault/ftag"
 )
 
 // Chain represents an unwound error chain. Each step is a useful error. Errors
@@ -84,4 +85,23 @@ func Flatten(err error) Chain {
 	}
 
 	return f
+}
+
+func FlattenString(err error) string {
+	chain := Flatten(err)
+	if len(chain) == 0 {
+		return ""
+	}
+
+	tag := ftag.Get(err)
+
+	var message string = string("============ " + tag + " >>>>>>>>>>\n")
+	for _, step := range chain {
+		if step.Message != "" {
+			message += step.Location + "\n\t" + step.Message + "\n\n"
+		}
+	}
+	message += "<<<<<<<<<< ERROR ============\n"
+
+	return message
 }
