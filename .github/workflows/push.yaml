@@ -21,3 +21,8 @@ jobs:
       - uses: codecov/codecov-action@v3
         with:
           files: ./coverage.out
+
+      - name: Release a new version
+        run: |
+          chmod +x ./release.sh
+          ./release.sh
