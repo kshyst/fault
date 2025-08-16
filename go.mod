@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/go-playground/validator/v10 v10.27.0
 	github.com/kr/pretty v0.3.1
+	github.com/lib/pq v1.2.0
 )
 
 require (
