@@ -5,6 +5,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/lib/pq"
 	"net/http"
+	"strings"
 )
 
 type APIResponse struct {
@@ -49,12 +50,30 @@ func ValidatorError(err error) *APIResponse {
 	}
 }
 
+// extractFieldFromConstraint extracts the field name from constraint names like "users_username_fkey"
+func extractFieldFromConstraint(constraint string) string {
+	parts := strings.Split(constraint, "_")
+	if len(parts) < 3 {
+		return "unknown"
+	}
+	// Join all parts except the first and last (table name and constraint type)
+	return strings.Join(parts[1:len(parts)-1], "_")
+}
+
 func RepositorError(err error) *APIResponse {
 	var pqErr *pq.Error
 	if errors.As(err, &pqErr) {
 		switch pqErr.Code {
 		case "23505": // unique_violation
-			handleUniqueViolation(c, pqErr)
+			return &APIResponse{
+				Success: false,
+				Error: &ErrorInfo{
+					Code: http.StatusConflict,
+					Details: map[string]interface{}{
+						"field": extractFieldFromConstraint(pqErr.Constraint),
+					},
+				},
+			}
 		case "23503": // foreign_key_violation
 			handleForeignKeyViolation(c, pqErr)
 		case "23502": // not_null_violation
